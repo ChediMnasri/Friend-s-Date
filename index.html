@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An interactive experience from another universe">
+    <title>Portal of the Stranger</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- Anime.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    
+    <!-- Lottie Web Player -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    
+    <style>
+        /* ========================================
+           DESIGN SYSTEM - INFJ AESTHETIC
+           ======================================== */
+        
+        :root {
+            --deep-navy: #1A1B2F;
+            --royal-purple: #3A0CA3;
+            --soft-lavender: #7F5AF0;
+            --soft-beige: #E9D8FD;
+            --mist-white: #F6F2FF;
+            --warm-glow: #FFB86C;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--deep-navy) 0%, #2A1B4D 50%, var(--deep-navy) 100%);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            color: var(--mist-white);
+            line-height: 1.6;
+        }
+        
+        /* ========================================
+           MAIN PORTAL CONTAINER
+           ======================================== */
+        
+        .portal-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* ========================================
+           FLOATING GLOWING OBJECT
+           ======================================== */
+        
+        .portal-object {
+            width: 280px;
+            height: 280px;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            filter: drop-shadow(0 0 40px rgba(127, 90, 240, 0.6));
+        }
+        
+        .portal-object:hover {
+            transform: scale(1.05) translateY(-5px);
+            filter: drop-shadow(0 0 60px rgba(127, 90, 240, 0.8));
+        }
+        
+        /* ========================================
+           TEXT ELEMENTS
+           ======================================== */
+        
+        .portal-text-main {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--soft-beige);
+            opacity: 0;
+            margin-top: 3rem;
+            text-align: center;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .portal-text-sub {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--soft-lavender);
+            opacity: 0;
+            margin-top: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: color 0.6s ease;
+        }
+        
+        .portal-text-sub:hover {
+            color: var(--warm-glow);
+        }
+        
+        /* ========================================
+           PARTICLE EFFECTS
+           ======================================== */
+        
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: radial-gradient(circle, var(--soft-lavender) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+        }
+        
+        /* ========================================
+           PAGE TRANSITION
+           ======================================== */
+        
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--mist-white);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+        
+        @media (max-width: 768px) {
+            .portal-object {
+                width: 220px;
+                height: 220px;
+            }
+            
+            .portal-text-main {
+                font-size: 1.25rem;
+                padding: 0 2rem;
+            }
+            
+            .portal-text-sub {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ========================================
+         PARTICLE BACKGROUND
+         ======================================== -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- ========================================
+         MAIN PORTAL CONTENT
+         ======================================== -->
+    <div class="portal-container">
+        <!-- Lottie Animation Container -->
+        <div class="portal-object" id="portalObject">
+            <!--
+                PLACEHOLDER: Replace with your actual Lottie JSON file
+                Create a free account at lottiefiles.com, search for "glowing orb", 
+                "portal", "mystery sphere", or "cosmic glow" animations
+                Download the JSON and put it in /assets/animations/portal.json
+                Then update the src attribute below
+            -->
+            <lottie-player 
+                src="https://assets2.lottiefiles.com/packages/lf20_kkflmtur.json"
+                background="transparent"
+                speed="0.8"
+                loop
+                autoplay
+                style="width: 100%; height: 100%;">
+            </lottie-player>
+        </div>
+        
+        <!-- Main Text -->
+        <h1 class="portal-text-main" id="mainText">
+            Someone is trying to reach you<br>
+            from another universe.
+        </h1>
+        
+        <!-- Sub Text / Call to Action -->
+        <p class="portal-text-sub" id="subText">
+            Click me… if you dare.
+        </p>
+    </div>
+    
+    <!-- ========================================
+         PAGE TRANSITION OVERLAY
+         ======================================== -->
+    <div class="page-transition" id="pageTransition"></div>
+    
+    <!-- ========================================
+         JAVASCRIPT
+         ======================================== -->
+    <script>
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // ========================================
+            // INITIAL ANIMATIONS
+            // ========================================
+            
+            // Animate text elements with soft fade-in
+            gsap.timeline()
+                .to("#mainText", {
+                    opacity: 1,
+                    y: -20,
+                    duration: 1.2,
+                    ease: "power2.out",
+                    delay: 0.5
+                })
+                .to("#subText", {
+                    opacity: 1,
+                    y: -10,
+                    duration: 1,
+                    ease: "power2.out"
+                }, "-=0.8");
+            
+            // ========================================
+            // PARTICLE GENERATION
+            // ========================================
+            
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random position
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                
+                // Random size
+                const size = Math.random() * 3 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                particlesContainer.appendChild(particle);
+                
+                // Animate each particle with unique delay
+                gsap.to(particle, {
+                    opacity: Math.random() * 0.6 + 0.2,
+                    y: -100,
+                    x: (Math.random() - 0.5) * 60,
+                    duration: Math.random() * 20 + 15,
+                    repeat: -1,
+                    ease: "none",
+                    delay: Math.random() * 5
+                });
+            }
+            
+            // ========================================
+            // PORTAL CLICK HANDLER
+            // ========================================
+            
+            const portal = document.getElementById('portalObject');
+            const subText = document.getElementById('subText');
+            
+            function navigateToStranger() {
+                // Disable further clicks
+                portal.style.pointerEvents = 'none';
+                subText.style.pointerEvents = 'none';
+                
+                // Play click feedback
+                gsap.to(portal, {
+                    scale: 0.95,
+                    duration: 0.3,
+                    ease: "power2.inOut",
+                    yoyo: true,
+                    repeat: 1
+                });
+                
+                // Trigger page transition
+                const transition = document.getElementById('pageTransition');
+                gsap.to(transition, {
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: "power2.inOut",
+                    onComplete: function() {
+                        // Navigate to next page
+                        window.location.href = 'stranger.html';
+                    }
+                });
+            }
+            
+            // Add click listeners
+            portal.addEventListener('click', navigateToStranger);
+            subText.addEventListener('click', navigateToStranger);
+            
+            // ========================================
+            // HOVER ANIMATIONS
+            // ========================================
+            
+            portal.addEventListener('mouseenter', function() {
+                gsap.to(portal, {
+                    rotation: 5,
+                    duration: 1,
+                    ease: "power2.out"
+                });
+            });
+            
+            portal.addEventListener('mouseleave', function() {
+                gsap.to(portal, {
+                    rotation: 0,
+                    duration: 1,
+                    ease: "power2.out"
+                });
+            });
+            
+            // ========================================
+            // CONTINUOUS SUBTLE ROTATION
+            // ========================================
+            
+            gsap.to(portal, {
+                rotation: 360,
+                duration: 60,
+                ease: "none",
+                repeat: -1
+            });
+            
+        });
+    </script>
+</body>
+</html>

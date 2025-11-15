@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Meet the stranger from another universe">
+    <title>Chedy the Stranger</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    
+    <style>
+        /* ========================================
+           DESIGN SYSTEM - INFJ AESTHETIC (Original Colors)
+           ======================================== */
+        
+        :root {
+            --deep-navy: #1A1B2F;
+            --royal-purple: #3A0CA3;
+            --soft-lavender: #7F5AF0;
+            --soft-beige: #E9D8FD;
+            --mist-white: #F6F2FF;
+            --warm-glow: #FFB86C;
+            --love-red: #FF6B6B;
+            --like-green: #51CF66;
+            --friendship-blue: #339AF0;
+
+            /* NEW: Background Gradient Colors */
+            --bg-start-blue: #0F002B; /* Deep Indigo */
+            --bg-mid-purple: #3A0077; /* Rich Purple */
+            --bg-end-teal: #004D40;   /* Dark Teal */
+            --bg-accent-light: rgba(127, 90, 240, 0.1); /* Subtle lavender for particles */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            /* World-Class: Animated, Smooth Gradient Background (Breathy Effect) */
+            background: linear-gradient(135deg, var(--bg-start-blue) 0%, var(--bg-mid-purple) 50%, var(--bg-end-teal) 100%);
+            background-size: 400% 400%; /* Larger size for smooth movement */
+            animation: breathyCosmicBackground 20s ease-in-out infinite alternate; /* Slower, more ethereal */
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            color: var(--deep-navy); /* Original default text color for visibility */
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        @keyframes breathyCosmicBackground {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+        
+        /* Ambient Particle System Style (Enhanced for new background) */
+        .particle {
+            position: absolute;
+            background: linear-gradient(45deg, var(--soft-lavender), var(--warm-glow));
+            border-radius: 50%;
+            opacity: 0.6; /* Softer opacity */
+            pointer-events: none;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5); /* More prominent glow */
+            z-index: 1; /* Below the card */
+            filter: blur(1px); /* Soften the edges */
+        }
+
+        /* ========================================
+           MAIN CONTAINER (Original)
+           ======================================== */
+        
+        .stranger-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+            padding: 2rem;
+        }
+        
+        /* ========================================
+           FLOATING PROFILE CARD (Original Glass)
+           ======================================== */
+        
+        .card-wrapper {
+            perspective: 1500px;
+            width: 100%;
+            max-width: 420px;
+            height: 560px;
+            position: relative;
+        }
+        
+        .profile-card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+        
+        .profile-card.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 24px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.85); /* Original opacity */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 60px rgba(58, 12, 163, 0.15);
+            will-change: transform;
+            transform: translateZ(0);
+            overflow: hidden;
+        }
+        
+        .card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, rgba(255, 184, 108, 0.1) 0%, rgba(127, 90, 240, 0.1) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 3rem;
+        }
+        
+        /* Animated border glow - Optimized */
+        .card-face::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--soft-lavender), var(--warm-glow), var(--soft-lavender));
+            border-radius: 24px;
+            opacity: 0.7;
+            z-index: -1;
+            animation: borderGlow 4s ease-in-out infinite;
+            will-change: opacity, filter;
+        }
+        
+        @keyframes borderGlow {
+            0%, 100% {
+                opacity: 0.5;
+                filter: blur(8px);
+            }
+            50% {
+                opacity: 0.8;
+                filter: blur(12px);
+            }
+        }
+        
+        /* ========================================
+           CARD CONTENT (Original Colors)
+           ======================================== */
+        
+        .profile-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--royal-purple); /* Original color */
+            text-align: center;
+            margin-bottom: 2.5rem;
+            line-height: 1.2;
+            text-shadow: 0 2px 4px rgba(58, 12, 163, 0.1);
+            word-spacing: -0.1em;
+        }
+        
+        .profile-emoji {
+            font-size: 4rem;
+            margin: 0.5rem 0 1rem;
+            opacity: 0.8;
+            display: inline-block;
+            animation: emojiFloat 3s ease-in-out infinite;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+        
+        @keyframes emojiFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+        
+        /* ========================================
+           INFO COLUMNS (Original)
+           ======================================== */
+        
+        .info-columns {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            flex-grow: 1;
+            justify-content: flex-start; 
+        }
+        
+        .info-column {
+            padding: 1.5rem;
+            border-radius: 16px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            max-height: 6rem; 
+            transition: max-height 0.8s ease-in-out, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease, background 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+        }
+
+        .info-column:hover,
+        .info-column.content-visible { 
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(58, 12, 163, 0.1);
+            background: rgba(255, 255, 255, 0.7);
+            max-height: 20rem; 
+        }
+        
+        .info-column::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 0;
+        }
+        
+        .info-column:hover::before,
+        .info-column.content-visible::before {
+            opacity: 1;
+        }
+        
+        .occupation-column {
+            background: rgba(247, 242, 255, 0.6); /* Original background */
+        }
+        
+        .status-column {
+            background: rgba(233, 216, 253, 0.6); /* Original background */
+        }
+        
+        .column-label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--royal-purple); /* Original color */
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .column-text {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--deep-navy); /* Original color */
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+            
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease 0.4s, transform 0.3s ease 0.4s;
+        }
+        
+        .info-column:hover .column-text,
+        .info-column.content-visible .column-text {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .info-column:hover .column-text {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+        }
+        
+        .word-love {
+            color: var(--love-red);
+            font-weight: 500;
+            text-shadow: 0 0 8px rgba(255, 107, 107, 0.3);
+        }
+        
+        .word-like {
+            color: var(--like-green);
+            font-weight: 500;
+            text-shadow: 0 0 8px rgba(81, 207, 102, 0.3);
+        }
+        
+        .word-friendship {
+            color: var(--friendship-blue);
+            font-weight: 500;
+            text-shadow: 0 0 8px rgba(51, 154, 240, 0.3);
+        }
+        
+        .modern-x {
+            display: inline-block;
+            font-size: 1.2em;
+            color: var(--love-red);
+            font-weight: bold;
+            vertical-align: middle;
+            margin-left: 0.25em;
+            filter: drop-shadow(0 0 3px rgba(255, 107, 107, 0.5));
+        }
+        
+        /* ========================================
+           BUTTON (Original with minor polish)
+           ======================================== */
+        
+        .decode-button {
+            margin-top: 2rem;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--warm-glow) 0%, #FF9E6D 100%);
+            color: var(--deep-navy);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 10px 30px rgba(255, 184, 108, 0.3);
+            pointer-events: none;
+            will-change: transform, opacity;
+        }
+        
+        .decode-button.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+        
+        .decode-button:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 15px 40px rgba(255, 184, 108, 0.4);
+        }
+        
+        .decode-button:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+        
+        /* ========================================
+           BACK OF CARD CONTENT (Original)
+           ======================================== */
+        
+        .card-back-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .back-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: var(--royal-purple);
+            margin-bottom: 2rem;
+            text-shadow: 0 2px 4px rgba(58, 12, 163, 0.1);
+        }
+        
+        .back-message {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--deep-navy);
+            line-height: 1.8;
+            font-style: italic;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+        }
+        
+        /* ========================================
+           PAGE TRANSITION (Now matches original theme)
+           ======================================== */
+        
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--mist-white); /* Original transition color */
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1000;
+            will-change: opacity;
+        }
+        
+        /* ========================================
+           RESPONSIVE (Original)
+           ======================================== */
+        
+        @media (max-width: 768px) {
+            .card-wrapper {
+                max-width: 340px;
+                height: 500px;
+            }
+            
+            .profile-title {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
+            
+            .info-column {
+                padding: 1.25rem;
+                max-height: 5.5rem;
+            }
+            
+            .column-text {
+                font-size: 0.9rem;
+            }
+            
+            .profile-emoji {
+                font-size: 3rem;
+            }
+            
+            .decode-button {
+                padding: 0.9rem 2rem;
+                font-size: 0.9rem;
+            }
+            
+            .back-title {
+                font-size: 1.5rem;
+            }
+            
+            .back-message {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stranger-container {
+                padding: 1rem;
+            }
+            
+            .card-face {
+                padding: 2rem 1.5rem;
+            }
+            
+            .card-wrapper {
+                max-width: 300px;
+                height: 460px;
+            }
+            
+            .profile-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stranger-container">
+        <div class="card-wrapper">
+            <div class="profile-card" id="profileCard">
+                <div class="card-face card-front">
+                    <div style="width: 100%; text-align: center;">
+                        <div class="profile-emoji">🎭</div>
+                        <h1 class="profile-title">Chedy the Stranger</h1>
+                    </div>
+                    
+                    <div class="info-columns">
+                        <div class="info-column occupation-column" id="occupationColumn">
+                            <div class="column-label">Occupation</div>
+                            <div class="column-text">
+                                Learning your new <span class="word-love">Love</span>/<span class="word-like">Like</span>/<span class="word-friendship">Friendship</span> Language®<br>
+                                <small style="color: #6B7280; font-size: 0.85em;">(previous languages: questionable <span class="modern-x">✗</span>)</small>
+                            </div>
+                        </div>
+                        
+                        <div class="info-column status-column" id="statusColumn">
+                            <div class="column-label">Status</div>
+                            <div class="column-text">
+                                Building a peace-offering for the best Beautiful Art Director in the world.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-face card-back">
+                    <div class="card-back-content">
+                        <h2 class="back-title">Behind the Mask</h2>
+                        <p class="back-message">
+                            "Sometimes the strangest strangers are just learning how to be less strange for someone who matters."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="decode-button" id="decodeButton">
+            Decode the Message →
+        </button>
+    </div>
+    
+    <div class="page-transition" id="pageTransition"></div>
+    
+    <script>
+        // ========================================
+        // PERFORMANCE OPTIMIZATIONS & SETUP
+        // ========================================
+        
+        'use strict';
+        
+        // Cache DOM elements
+        const DOM = {
+            card: null,
+            button: null,
+            transition: null,
+            occupationColumn: null, 
+            statusColumn: null,     
+            particles: []
+        };
+        
+        // Animation state
+        const state = {
+            isFlipped: false,
+            isTransitioning: false,
+            floatAnimation: null,
+            particleAnimations: [],
+            hasReadBack: false, // Tracks if user has seen the back of the card
+            currentVisibleColumn: null 
+        };
+        
+        // ========================================
+        // OPTIMIZED PARTICLE SYSTEM 
+        // ========================================
+        
+        function createParticles() {
+            const particleCount = 25; // Increased count for richer background
+            const fragment = document.createDocumentFragment();
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 7 + 2; 
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                
+                fragment.appendChild(particle);
+                DOM.particles.push(particle);
+                
+                const anim = gsap.to(particle, {
+                    y: (Math.random() * -150) - 50, // More subtle vertical float
+                    x: (Math.random() - 0.5) * 80,
+                    opacity: 0.2 + Math.random() * 0.6, // Varied opacity
+                    duration: Math.random() * 25 + 20,
+                    repeat: -1,
+                    ease: "sine.inOut",
+                    yoyo: true, 
+                    delay: Math.random() * 10
+                });
+                
+                state.particleAnimations.push(anim);
+            }
+            
+            document.body.appendChild(fragment);
+        }
+        
+        // ========================================
+        // CARD FLIP HANDLER (Fixed Logic)
+        // ========================================
+        
+        function flipCard() {
+            if (state.isTransitioning) return;
+            
+            state.isTransitioning = true;
+            state.isFlipped = !state.isFlipped;
+            
+            DOM.card.classList.toggle('flipped', state.isFlipped);
+            
+            if (state.isFlipped) {
+                // When flipping to the back
+                setTimeout(() => {
+                    state.hasReadBack = true;
+                    // Update button text after card has visibly flipped
+                    DOM.button.textContent = 'Continue the Journey →'; 
+                    state.isTransitioning = false;
+                }, 1200); // Matches card flip animation duration
+            } else {
+                // When flipping back to the front
+                state.hasReadBack = false; // Reset if they flip back
+                DOM.button.textContent = 'Decode the Message →'; // Reset button text
+                setTimeout(() => {
+                    state.isTransitioning = false;
+                }, 800);
+            }
+        }
+        
+        // ========================================
+        // BUTTON CLICK HANDLER 
+        // ========================================
+        
+        function handleButtonClick(e) {
+            e.stopPropagation();
+            
+            // Only allow button to trigger page transition AFTER back of card has been seen
+            if (!state.hasReadBack) {
+                // If not read back, but button is clicked, assume user wants to flip
+                // This handles the case where user expects button to flip the card if not flipped yet.
+                if (!state.isFlipped) {
+                    flipCard(); 
+                }
+                return; // Prevent immediate navigation
+            }
+
+            if (state.isTransitioning) return;
+            
+            state.isTransitioning = true;
+            DOM.button.style.pointerEvents = 'none';
+            
+            // Button feedback animation
+            gsap.to(DOM.button, {
+                scale: 0.95,
+                duration: 0.15,
+                ease: "power2.out",
+                onComplete: () => {
+                    gsap.to(DOM.button, {
+                        scale: 1,
+                        duration: 0.15,
+                        ease: "power2.out"
+                    });
+                }
+            });
+            
+            // Page transition
+            gsap.to(DOM.transition, {
+                opacity: 1,
+                duration: 0.8,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    window.location.href = 'cards.html';
+                }
+            });
+        }
+        
+        // ========================================
+        // CARD HOVER/TAP HANDLER 
+        // ========================================
+        
+        const isTouchDevice = () => ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
+
+        function handleColumnClick(e) {
+            const column = e.currentTarget;
+            
+            if (!isTouchDevice() && window.innerWidth > 768) return;
+
+            e.stopPropagation();
+
+            if (state.currentVisibleColumn === column) {
+                column.classList.remove('content-visible');
+                state.currentVisibleColumn = null;
+            } else {
+                if (state.currentVisibleColumn) {
+                    state.currentVisibleColumn.classList.remove('content-visible');
+                }
+                column.classList.add('content-visible');
+                state.currentVisibleColumn = column;
+            }
+        }
+
+        // ========================================
+        // HOVER EFFECTS (Card wrapper - Throttled)
+        // ========================================
+        
+        let hoverTimeout = null;
+        
+        function handleMouseEnter() {
+            if (state.isTransitioning) return;
+            
+            clearTimeout(hoverTimeout);
+            const scale = state.isFlipped ? 1.01 : 1.02;
+            gsap.to(DOM.card, {
+                scale: scale,
+                duration: 0.6,
+                ease: "power2.out"
+            });
+        }
+        
+        function handleMouseLeave() {
+            clearTimeout(hoverTimeout);
+            hoverTimeout = setTimeout(() => {
+                gsap.to(DOM.card, {
+                    scale: 1,
+                    duration: 0.6,
+                    ease: "power2.out"
+                });
+            }, 50);
+        }
+        
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        
+        function init() {
+            DOM.card = document.getElementById('profileCard');
+            DOM.button = document.getElementById('decodeButton');
+            DOM.transition = document.getElementById('pageTransition');
+            DOM.occupationColumn = document.getElementById('occupationColumn'); 
+            DOM.statusColumn = document.getElementById('statusColumn');      
+            
+            gsap.fromTo(DOM.card, 
+                { opacity: 0, y: 40 },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 1.2, 
+                    ease: "power3.out",
+                    delay: 0.3 
+                }
+            );
+            
+            // Button appears after card loads, initially saying "Decode the Message"
+            gsap.to(DOM.button, {
+                delay: 1.8,
+                duration: 1,
+                ease: "power2.out",
+                onComplete: () => {
+                    DOM.button.classList.add('visible');
+                    // Ensure initial text is correct
+                    DOM.button.textContent = 'Decode the Message →'; 
+                }
+            });
+            
+            state.floatAnimation = gsap.to(DOM.card, {
+                y: -8,
+                duration: 4,
+                ease: "sine.inOut",
+                repeat: -1,
+                yoyo: true
+            });
+            
+            DOM.card.addEventListener('click', flipCard);
+            DOM.button.addEventListener('click', handleButtonClick);
+            
+            DOM.occupationColumn.addEventListener('click', handleColumnClick);
+            DOM.statusColumn.addEventListener('click', handleColumnClick);
+            
+            DOM.card.addEventListener('mouseenter', handleMouseEnter);
+            DOM.card.addEventListener('mouseleave', handleMouseLeave);
+            
+            createParticles();
+        }
+        
+        // ========================================
+        // CLEANUP ON PAGE UNLOAD
+        // ========================================
+        
+        window.addEventListener('beforeunload', () => {
+            if (state.floatAnimation) state.floatAnimation.kill();
+            state.particleAnimations.forEach(anim => anim.kill());
+        });
+        
+        // ========================================
+        // START APPLICATION
+        // ========================================
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>

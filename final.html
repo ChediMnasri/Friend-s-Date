@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Peace offering from the stranger">
+    <title>Peace Offering</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <style>
+        /* ========================================
+           DESIGN SYSTEM - CALM GREEN & PURPLE FLOW
+           ======================================== */
+        
+        :root {
+            /* Harmonized Green & Purple Palette */
+            --deep-purple: #3A0CA3;     /* Deep base color */
+            --soft-lavender: #7F5AF0;   /* Bright purple accent */
+            --deep-teal: #16A085;       /* Deep green base */
+            --calm-green: #2ECC71;      /* Bright green accent */
+            --light-mint: #A8E6CF;      /* Lightest green for glow */
+            --mist-white: #F6F2FF;
+            --shadow-color-green: rgba(33, 150, 83, 0.5); /* Green shadow */
+            --shadow-color-purple: rgba(127, 90, 240, 0.5); /* Purple shadow */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* BREATHY CALM MOVING BACKGROUND: Enhanced Green & Purple Flow */
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Multi-stop gradient mixing green and purple for a smooth, deep flow */
+            background: linear-gradient(
+                135deg, 
+                var(--light-mint) 0%, 
+                var(--soft-lavender) 25%, 
+                var(--deep-purple) 50%, 
+                var(--calm-green) 75%, 
+                var(--light-mint) 100%
+            );
+            /* Massive background size for fluid movement */
+            background-size: 400% 400%; 
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            color: var(--deep-teal);
+            line-height: 1.6;
+        }
+        
+        /* ========================================
+           MAIN CONTAINER
+           ======================================== */
+        
+        .final-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+            padding: 2rem;
+            transition: opacity 1s;
+        }
+        
+        /* ========================================
+           PULSING HEART (GSAP handles the pulse)
+           ======================================== */
+        
+        .heart-container {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 3rem;
+            opacity: 0;
+        }
+        
+        .heart-svg {
+            width: 100%;
+            height: 100%;
+            fill: var(--mist-white);
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.6));
+        }
+        
+        /* ========================================
+           TEXT SEQUENCE
+           ======================================== */
+        
+        .text-sequence {
+            max-width: 600px;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .text-line {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--mist-white);
+            opacity: 0;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* ========================================
+           BUTTONS (Glassier & Shadowed)
+           ======================================== */
+        
+        .buttons-container {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            opacity: 0;
+        }
+        
+        .choice-button {
+            padding: 1rem 2.5rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            backdrop-filter: blur(15px); /* Glassier */
+            -webkit-backdrop-filter: blur(15px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15); /* Default subtle shadow */
+        }
+        
+        .button-yes {
+            background: rgba(255, 255, 255, 0.7); /* Lighter Glass */
+            color: var(--deep-purple); /* Dark text on light button */
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+        
+        .button-yes:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 15px 40px var(--shadow-color-purple); /* Purple shadow on hover */
+        }
+        
+        .button-maybe {
+            background: rgba(168, 230, 207, 0.2); /* Light Mint transparent */
+            color: var(--mist-white);
+            border: 1px solid rgba(168, 230, 207, 0.5);
+        }
+        
+        .button-maybe:hover {
+            background: rgba(168, 230, 207, 0.4);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 15px 40px var(--shadow-color-green); /* Green shadow on hover */
+        }
+        
+        /* Thinking state for maybe button */
+        .button-thinking {
+            background: rgba(255, 255, 255, 0.3) !important;
+            color: var(--deep-teal) !important;
+            cursor: not-allowed !important;
+        }
+        
+        .button-waiting {
+            background: rgba(22, 160, 133, 0.2) !important; /* deep-teal transparent */
+            color: var(--light-mint) !important; 
+            cursor: default !important;
+            opacity: 0.8;
+            box-shadow: none !important;
+        }
+
+        /* ========================================
+           FINAL CONFIRMATION MESSAGE STYLES
+           ======================================== */
+        
+        #finalMessage {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--deep-purple); /* Use deep purple for confirmation text */
+            font-family: 'Playfair Display', serif;
+            padding: 8rem;
+            z-index: 100;
+        }
+        
+        #finalMessage h1 {
+            font-size: 3rem;
+            font-weight: 600;
+        }
+        
+        #finalMessage .emoji {
+            font-size: 7rem;
+            display: block;
+            margin: 1.5rem 0;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+        }
+
+        #finalMessage p {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+        
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+        
+        @media (max-width: 768px) {
+            .heart-container {
+                width: 100px;
+                height: 100px;
+                margin-bottom: 2.5rem;
+            }
+            
+            .text-line {
+                font-size: 1.25rem;
+                padding: 0 1rem;
+            }
+            
+            .buttons-container {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .choice-button {
+                width: 100%;
+            }
+
+            #finalMessage h1 {
+                font-size: 2rem;
+            }
+            #finalMessage .emoji {
+                font-size: 5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ========================================
+        MAIN CONTAINER
+        ======================================== -->
+    <div class="final-container">
+        <!-- Pulsing Heart -->
+        <div class="heart-container" id="heartContainer">
+            <svg class="heart-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+        </div>
+        
+        <!-- Text Sequence -->
+        <div class="text-sequence" id="textSequence">
+            <p class="text-line">I'm sorry.</p>
+            <p class="text-line">I respect your space,</p>
+            <p class="text-line">your pace,</p>
+            <p class="text-line">your world.</p>
+            <!-- This line will have the floating animation -->
+            <p class="text-line" id="floatingLine" style="margin-top: 3rem;">Are you still down for our friend-date tonight?</p>
+        </div>
+        
+        <!-- Buttons -->
+        <div class="buttons-container" id="buttonsContainer">
+            <button class="choice-button button-yes" id="yesButton">
+                Yes I am in and 😄
+            </button>
+            <button class="choice-button button-maybe" id="maybeButton">
+                Maybe... let me think 👀
+            </button>
+        </div>
+    </div>
+    
+    <!-- ========================================
+        JAVASCRIPT
+        ======================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const heartContainer = document.getElementById('heartContainer');
+            const textLines = document.querySelectorAll('.text-sequence .text-line');
+            const buttonsContainer = document.getElementById('buttonsContainer');
+            const finalContainer = document.querySelector('.final-container');
+            const yesButton = document.getElementById('yesButton');
+            const maybeButton = document.getElementById('maybeButton');
+            const floatingLine = document.getElementById('floatingLine');
+
+            // Global variable for background animation (to stop it later)
+            let backgroundTween;
+            
+            // ========================================
+            // INITIAL LOAD ANIMATIONS
+            // ========================================
+
+            // Continuous Background Gradient Shift (Enhanced Green & Purple Flow)
+            // Animates the background position over the 400% area for smooth, continuous movement
+            backgroundTween = gsap.to(document.body, {
+                backgroundPosition: '400% 400%',
+                duration: 35, /* Slightly slower, calmer flow */
+                ease: "power1.inOut", 
+                repeat: -1,
+                yoyo: true
+            });
+            
+            // Heart fades in and starts pulsing
+            gsap.to(heartContainer, {
+                opacity: 1,
+                scale: 1,
+                duration: 2,
+                ease: "power2.out",
+                delay: 0.5,
+                onComplete: function() {
+                    // Start continuous pulse (Heartbeat animation)
+                    gsap.to(heartContainer, {
+                        scale: 1.1, /* More pronounced pulse */
+                        duration: 1.5,
+                        ease: "sine.inOut",
+                        repeat: -1,
+                        yoyo: true
+                    });
+                }
+            });
+            
+            // Text lines appear slowly
+            textLines.forEach((line, index) => {
+                gsap.to(line, {
+                    opacity: 1,
+                    y: index === textLines.length - 1 ? 0 : -10, 
+                    duration: 1.5,
+                    ease: "power2.out",
+                    delay: index * 1.5 + 1.5 
+                });
+            });
+            
+            // Calculate delay for floating animation and buttons
+            const lastTextDelay = (textLines.length * 1.5 + 1) * 1000;
+
+            // Question line floating animation
+            setTimeout(() => {
+                 gsap.to(floatingLine, {
+                    y: 10, /* Float 10px up and down */
+                    duration: 3,
+                    ease: "sine.inOut",
+                    repeat: -1,
+                    yoyo: true,
+                });
+            }, lastTextDelay - 1000); // Start floating slightly before buttons appear
+
+            // Buttons appear after text
+            setTimeout(() => {
+                gsap.to(buttonsContainer, {
+                    opacity: 1,
+                    y: -20,
+                    duration: 1.5,
+                    ease: "power2.out"
+                });
+            }, lastTextDelay);
+            
+            // ========================================
+            // YES BUTTON (Full Screen Animation)
+            // ========================================
+            
+            yesButton.addEventListener('click', function() {
+                // Disable buttons and hover effects
+                yesButton.style.pointerEvents = 'none';
+                maybeButton.style.pointerEvents = 'none';
+                
+                // Button feedback
+                gsap.to(this, {
+                    scale: 0.95,
+                    duration: 0.2,
+                    yoyo: true,
+                    repeat: 1,
+                    ease: "power2.inOut"
+                });
+                
+                // 1. Animate current content away
+                gsap.to(finalContainer, {
+                    opacity: 0,
+                    scale: 0.9,
+                    duration: 1.5,
+                    ease: "power3.in"
+                });
+
+                // 2. Animate body background to a solid confirmation color
+                if (backgroundTween) backgroundTween.pause();
+                gsap.to(document.body, {
+                    background: 'var(--light-mint)', /* Solid light color */
+                    duration: 2,
+                    ease: "power3.inOut"
+                });
+
+                // 3. Create and animate the confirmation message
+                const finalMessage = document.createElement('div');
+                finalMessage.id = 'finalMessage';
+                finalMessage.style.opacity = 0; // Start hidden
+                finalMessage.innerHTML = `
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl">See you tonight!</h1>
+                    <span class="emoji">✨😉</span>
+                    <p>The stranger is grateful and already on their way.</p>
+                `;
+                document.body.appendChild(finalMessage);
+
+                gsap.to(finalMessage, {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 2,
+                    delay: 1.5, // Wait for fade out and color change
+                    ease: "power3.out",
+                    onComplete: () => {
+                         // Clean up the old container
+                         finalContainer.remove();
+                    }
+                });
+            });
+            
+            // ========================================
+            // MAYBE BUTTON (Playful Thinking Animation)
+            // ========================================
+    
+            maybeButton.addEventListener('click', function() {
+                // Disable both buttons temporarily
+                yesButton.style.pointerEvents = 'none';
+                maybeButton.style.pointerEvents = 'none';
+                
+                // Change button to thinking state
+                this.classList.add('button-thinking');
+                this.textContent = 'Thinking.';
+                
+                // Dots animation
+                let dotCount = 1;
+                const dotsInterval = setInterval(() => {
+                    dotCount = (dotCount % 3) + 1;
+                    this.textContent = 'Thinking' + '.'.repeat(dotCount);
+                }, 600);
+                
+                // After 3 seconds, show waiting message
+                setTimeout(() => {
+                    clearInterval(dotsInterval);
+                    this.classList.remove('button-thinking');
+                    this.classList.add('button-waiting');
+                    this.textContent = 'Okay, I’ll wait here.';
+                    
+                    // Re-enable yes button
+                    yesButton.style.pointerEvents = 'all';
+                    
+                    // Maybe button stays in waiting state but is re-enabled to allow another click if needed
+                }, 3000);
+            });
+            
+        });
+    </script>
+</body>
+</html>
