@@ -14,8 +14,8 @@
     
     <style>
         /* ========================================
-           DESIGN SYSTEM - INFJ AESTHETIC (Original Colors)
-           ======================================== */
+            DESIGN SYSTEM - INFJ AESTHETIC 
+            ======================================== */
         
         :root {
             --deep-navy: #1A1B2F;
@@ -29,10 +29,10 @@
             --friendship-blue: #339AF0;
 
             /* NEW: Background Gradient Colors */
-            --bg-start-blue: #0F002B; /* Deep Indigo */
-            --bg-mid-purple: #3A0077; /* Rich Purple */
-            --bg-end-teal: #004D40;   /* Dark Teal */
-            --bg-accent-light: rgba(127, 90, 240, 0.1); /* Subtle lavender for particles */
+            --bg-start-blue: #0F002B;
+            --bg-mid-purple: #3A0077;
+            --bg-end-teal: #004D40;
+            --bg-accent-light: rgba(127, 90, 240, 0.1); 
         }
         
         * {
@@ -43,14 +43,13 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            /* World-Class: Animated, Smooth Gradient Background (Breathy Effect) */
             background: linear-gradient(135deg, var(--bg-start-blue) 0%, var(--bg-mid-purple) 50%, var(--bg-end-teal) 100%);
-            background-size: 400% 400%; /* Larger size for smooth movement */
-            animation: breathyCosmicBackground 20s ease-in-out infinite alternate; /* Slower, more ethereal */
+            background-size: 400% 400%; 
+            animation: breathyCosmicBackground 20s ease-in-out infinite alternate;
             min-height: 100vh;
             overflow: hidden;
             position: relative;
-            color: var(--deep-navy); /* Original default text color for visibility */
+            color: var(--deep-navy); 
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -61,21 +60,21 @@
             100% { background-position: 100% 100%; }
         }
         
-        /* Ambient Particle System Style (Enhanced for new background) */
+        /* Ambient Particle System Style */
         .particle {
             position: absolute;
             background: linear-gradient(45deg, var(--soft-lavender), var(--warm-glow));
             border-radius: 50%;
-            opacity: 0.6; /* Softer opacity */
+            opacity: 0.6; 
             pointer-events: none;
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5); /* More prominent glow */
-            z-index: 1; /* Below the card */
-            filter: blur(1px); /* Soften the edges */
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5); 
+            z-index: 1; 
+            filter: blur(1px); 
         }
 
         /* ========================================
-           MAIN CONTAINER (Original)
-           ======================================== */
+            MAIN CONTAINER
+            ======================================== */
         
         .stranger-container {
             width: 100%;
@@ -90,8 +89,8 @@
         }
         
         /* ========================================
-           FLOATING PROFILE CARD (Original Glass)
-           ======================================== */
+            FLOATING PROFILE CARD (Glass Morphism)
+            ======================================== */
         
         .card-wrapper {
             perspective: 1500px;
@@ -120,7 +119,8 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            backface-visibility: hidden;
+            /* FIX: backface visibility is hidden for both faces, ensuring you only see the current face */
+            backface-visibility: hidden; 
             -webkit-backface-visibility: hidden;
             border-radius: 24px;
             padding: 2.5rem;
@@ -128,7 +128,8 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            background: rgba(255, 255, 255, 0.85); /* Original opacity */
+            
+            /* Glass Morphism Base */
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.5);
@@ -137,10 +138,26 @@
             transform: translateZ(0);
             overflow: hidden;
         }
+
+        /* FIX: Card Front Visibility Management */
+        .card-front {
+            background: rgba(255, 255, 255, 0.85);
+            transition: background 0.6s ease-in-out, opacity 0.6s ease-in-out;
+        }
+
+        .profile-card.flipped .card-front {
+            opacity: 0; /* Fully hide the front face (including content) when flipped */
+            pointer-events: none; /* Disable interaction with the hidden front face */
+        }
         
+        /* 🔥 FIX: Enhanced Card Back Visibility (Stronger, less transparent background) */
         .card-back {
             transform: rotateY(180deg);
-            background: linear-gradient(135deg, rgba(255, 184, 108, 0.1) 0%, rgba(127, 90, 240, 0.1) 100%);
+            /* Set a darker, more solid background for the back face */
+            background: rgba(43, 40, 68, 0.75); 
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+            
+            /* Ensure the content is centered */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -176,14 +193,14 @@
         }
         
         /* ========================================
-           CARD CONTENT (Original Colors)
-           ======================================== */
+            CARD CONTENT
+            ======================================== */
         
         .profile-title {
             font-family: 'Playfair Display', serif;
             font-size: 2.5rem;
             font-weight: 600;
-            color: var(--royal-purple); /* Original color */
+            color: var(--royal-purple); 
             text-align: center;
             margin-bottom: 2.5rem;
             line-height: 1.2;
@@ -206,8 +223,8 @@
         }
         
         /* ========================================
-           INFO COLUMNS (Original)
-           ======================================== */
+            INFO COLUMNS
+            ======================================== */
         
         .info-columns {
             width: 100%;
@@ -254,17 +271,17 @@
         }
         
         .occupation-column {
-            background: rgba(247, 242, 255, 0.6); /* Original background */
+            background: rgba(247, 242, 255, 0.6); 
         }
         
         .status-column {
-            background: rgba(233, 216, 253, 0.6); /* Original background */
+            background: rgba(233, 216, 253, 0.6); 
         }
         
         .column-label {
             font-weight: 500;
             font-size: 0.9rem;
-            color: var(--royal-purple); /* Original color */
+            color: var(--royal-purple); 
             margin-bottom: 0.5rem;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -275,7 +292,7 @@
         .column-text {
             font-size: 1rem;
             font-weight: 400;
-            color: var(--deep-navy); /* Original color */
+            color: var(--deep-navy); 
             line-height: 1.7;
             position: relative;
             z-index: 1;
@@ -325,8 +342,8 @@
         }
         
         /* ========================================
-           BUTTON (Original with minor polish)
-           ======================================== */
+            BUTTON
+            ======================================== */
         
         .decode-button {
             margin-top: 2rem;
@@ -363,8 +380,8 @@
         }
         
         /* ========================================
-           BACK OF CARD CONTENT (Original)
-           ======================================== */
+            BACK OF CARD CONTENT 
+            ======================================== */
         
         .card-back-content {
             display: flex;
@@ -380,23 +397,23 @@
             font-family: 'Playfair Display', serif;
             font-size: 1.8rem;
             font-weight: 500;
-            color: var(--royal-purple);
+            color: var(--warm-glow); 
             margin-bottom: 2rem;
-            text-shadow: 0 2px 4px rgba(58, 12, 163, 0.1);
+            text-shadow: 0 0 8px rgba(255, 184, 108, 0.5); 
         }
         
         .back-message {
             font-size: 1.1rem;
             font-weight: 400;
-            color: var(--deep-navy);
+            color: var(--soft-beige); 
             line-height: 1.8;
             font-style: italic;
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+            text-shadow: 0 0 5px rgba(233, 216, 253, 0.5); 
         }
         
         /* ========================================
-           PAGE TRANSITION (Now matches original theme)
-           ======================================== */
+            PAGE TRANSITION
+            ======================================== */
         
         .page-transition {
             position: fixed;
@@ -404,7 +421,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--mist-white); /* Original transition color */
+            background: var(--mist-white); 
             opacity: 0;
             pointer-events: none;
             z-index: 1000;
@@ -412,8 +429,8 @@
         }
         
         /* ========================================
-           RESPONSIVE (Original)
-           ======================================== */
+            RESPONSIVE
+            ======================================== */
         
         @media (max-width: 768px) {
             .card-wrapper {
@@ -487,8 +504,8 @@
                         <div class="info-column occupation-column" id="occupationColumn">
                             <div class="column-label">Occupation</div>
                             <div class="column-text">
-                                Learning your new <span class="word-love">Love</span>/<span class="word-like">Like</span>/<span class="word-friendship">Friendship</span> Language®<br>
-                                <small style="color: #6B7280; font-size: 0.85em;">(previous languages: questionable <span class="modern-x">✗</span>)</small>
+                                Learning some new <span class="word-love">Love</span>/<span class="word-like">Like</span>/<span class="word-friendship">Friendship</span> Languages®<br>
+                                <small style="color: #6B7280; font-size: 0.85em;">(previous Chedy 2019-2025 languages: are questionable <span class="modern-x">✗</span>)</small>
                             </div>
                         </div>
                         
@@ -551,7 +568,7 @@
         // ========================================
         
         function createParticles() {
-            const particleCount = 25; // Increased count for richer background
+            const particleCount = 25; 
             const fragment = document.createDocumentFragment();
             
             for (let i = 0; i < particleCount; i++) {
@@ -568,9 +585,9 @@
                 DOM.particles.push(particle);
                 
                 const anim = gsap.to(particle, {
-                    y: (Math.random() * -150) - 50, // More subtle vertical float
+                    y: (Math.random() * -150) - 50, 
                     x: (Math.random() - 0.5) * 80,
-                    opacity: 0.2 + Math.random() * 0.6, // Varied opacity
+                    opacity: 0.2 + Math.random() * 0.6, 
                     duration: Math.random() * 25 + 20,
                     repeat: -1,
                     ease: "sine.inOut",
@@ -600,14 +617,14 @@
                 // When flipping to the back
                 setTimeout(() => {
                     state.hasReadBack = true;
-                    // Update button text after card has visibly flipped
+                    // The button text changes immediately after flip initiation
                     DOM.button.textContent = 'Continue the Journey →'; 
                     state.isTransitioning = false;
-                }, 1200); // Matches card flip animation duration
+                }, 1200); // Wait for the transition duration (1.2s in CSS)
             } else {
                 // When flipping back to the front
-                state.hasReadBack = false; // Reset if they flip back
-                DOM.button.textContent = 'Decode the Message →'; // Reset button text
+                state.hasReadBack = false;
+                DOM.button.textContent = 'Decode the Message →'; 
                 setTimeout(() => {
                     state.isTransitioning = false;
                 }, 800);
@@ -621,44 +638,43 @@
         function handleButtonClick(e) {
             e.stopPropagation();
             
-            // Only allow button to trigger page transition AFTER back of card has been seen
-            if (!state.hasReadBack) {
-                // If not read back, but button is clicked, assume user wants to flip
-                // This handles the case where user expects button to flip the card if not flipped yet.
-                if (!state.isFlipped) {
-                    flipCard(); 
-                }
-                return; // Prevent immediate navigation
+            // 1. Handle the Flip (First Click)
+            if (!state.isFlipped) {
+                flipCard(); 
+                return; 
             }
 
-            if (state.isTransitioning) return;
-            
-            state.isTransitioning = true;
-            DOM.button.style.pointerEvents = 'none';
-            
-            // Button feedback animation
-            gsap.to(DOM.button, {
-                scale: 0.95,
-                duration: 0.15,
-                ease: "power2.out",
-                onComplete: () => {
-                    gsap.to(DOM.button, {
-                        scale: 1,
-                        duration: 0.15,
-                        ease: "power2.out"
-                    });
-                }
-            });
-            
-            // Page transition
-            gsap.to(DOM.transition, {
-                opacity: 1,
-                duration: 0.8,
-                ease: "power2.inOut",
-                onComplete: () => {
-                    window.location.href = 'cards.html';
-                }
-            });
+            // 2. Handle Navigation (Second Click, only if flipped and read)
+            if (state.hasReadBack && state.isFlipped && !state.isTransitioning) {
+                
+                state.isTransitioning = true;
+                DOM.button.style.pointerEvents = 'none';
+                
+                // Button feedback animation
+                gsap.to(DOM.button, {
+                    scale: 0.95,
+                    duration: 0.15,
+                    ease: "power2.out",
+                    onComplete: () => {
+                        gsap.to(DOM.button, {
+                            scale: 1,
+                            duration: 0.15,
+                            ease: "power2.out"
+                        });
+                    }
+                });
+                
+                // Page transition
+                gsap.to(DOM.transition, {
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: "power2.inOut",
+                    onComplete: () => {
+                        window.location.href = 'cards.html';
+                    }
+                });
+                
+            }
         }
         
         // ========================================
@@ -726,6 +742,7 @@
             DOM.occupationColumn = document.getElementById('occupationColumn'); 
             DOM.statusColumn = document.getElementById('statusColumn');      
             
+            // Initial animation of the card
             gsap.fromTo(DOM.card, 
                 { opacity: 0, y: 40 },
                 { 
@@ -737,18 +754,18 @@
                 }
             );
             
-            // Button appears after card loads, initially saying "Decode the Message"
+            // Button appears after card loads
             gsap.to(DOM.button, {
                 delay: 1.8,
                 duration: 1,
                 ease: "power2.out",
                 onComplete: () => {
                     DOM.button.classList.add('visible');
-                    // Ensure initial text is correct
                     DOM.button.textContent = 'Decode the Message →'; 
                 }
             });
             
+            // Card floating animation
             state.floatAnimation = gsap.to(DOM.card, {
                 y: -8,
                 duration: 4,
@@ -757,11 +774,13 @@
                 yoyo: true
             });
             
-            DOM.card.addEventListener('click', flipCard);
+            // Event Listeners
             DOM.button.addEventListener('click', handleButtonClick);
             
             DOM.occupationColumn.addEventListener('click', handleColumnClick);
+            DOM.occupationColumn.addEventListener('touchstart', handleColumnClick, {passive: true});
             DOM.statusColumn.addEventListener('click', handleColumnClick);
+            DOM.statusColumn.addEventListener('touchstart', handleColumnClick, {passive: true});
             
             DOM.card.addEventListener('mouseenter', handleMouseEnter);
             DOM.card.addEventListener('mouseleave', handleMouseLeave);
